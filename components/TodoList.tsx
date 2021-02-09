@@ -19,18 +19,44 @@ const TodoList: React.FC<IProps> = ({ todos }) => {
 
   return (
     <div>
-      <div className="p-3.5 border-bottom">
-        <div className="text-base mb-2">
-          TODO<span className="ml-2">{todos.length}개</span>
+      <div className="border-bottom">
+        <div className="border-bottom p-3">
+          <div className="text-base mb-2 font-semibold">
+            TODO<span className="ml-2">{todos.length}개</span>
+          </div>
+
+          <div className="flex">
+            {Object.entries(todosColor).map(([color, value], index) => (
+              <div key={index} className="flex items-center mr-2">
+                <div className={`w-5 h-5 rounded-full bg-${color}-600`} />
+                <div className="text-base ml-1">{value}개</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="flex">
-          {Object.entries(todosColor).map(([color, value], index) => (
-            <div key={index} className="flex items-center mr-2">
-              <div className={`w-5 h-5 rounded-full bg-${color}-600`} />
-              <div className="text-base ml-1">{value}개</div>
-            </div>
-          ))}
+        <div>
+          <ul>
+            {todos.map((todo) => (
+              <li key={todo.id} className="flex justify-between items-center h-12 border-bottom">
+                <div className="h-full flex items-center">
+                  <div className={`w-3 h-full bg-${todo.color}-600`} />
+                  <div className={`ml-3 text-base ${todo.checked && 'line-through'}`}>
+                    {todo.text}
+                  </div>
+                </div>
+
+                <div className="flex mr-3">
+                  {!todo.checked && (
+                    <button
+                      className="w-5 h-5 rounded-full border border-solid border-gray-200 bg-transparent focus:outline-none"
+                      onClick={() => {}}
+                    ></button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
