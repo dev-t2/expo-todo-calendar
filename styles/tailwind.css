@@ -5,4 +5,8 @@
   @apply border-b border-solid border-gray-200;
 }
 
+.svg {
+  @apply w-6 cursor-pointer;
+}
+
 @tailwind utilities;

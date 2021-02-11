@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 
-import { ColorType, TodosType } from '../types/todo';
+import { ColorType, TodoType, TodosType } from '../types/todo';
 import { checkTodoAPI } from '../lib/api';
 
 const TodoList: React.FC<TodosType> = ({ todos }) => {
@@ -8,7 +8,9 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
 
   const todosColor = useMemo(
     () =>
-      updatedTodos.reduce((colors: ColorType, todo) => {
+      updatedTodos.reduce((colors: ColorType, todo: TodoType) => {
+        console.log(todo.color);
+
         return {
           ...colors,
           [todo.color]: ++colors[todo.color] || 1,
@@ -32,7 +34,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
 
   return (
     <div>
-      <div className="border-bottom">
+      <div>
         <div className="border-bottom p-3">
           <div className="text-base mb-2 font-semibold">
             TODO<span className="ml-2">{updatedTodos.length}개</span>
@@ -62,36 +64,40 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
                 <div className="flex mr-3">
                   {todo.checked ? (
                     <>
-                      <svg
-                        className="w-6 mr-3 text-red-900 cursor-pointer"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
+                      <div>
+                        <svg
+                          className="svg mr-3 text-red-900"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </div>
 
-                      <svg
-                        className="w-6 text-green-900 cursor-pointer"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        onClick={onClickCheck(todo.id)}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <div>
+                        <svg
+                          className="svg text-green-900"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          onClick={onClickCheck(todo.id)}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </div>
                     </>
                   ) : (
                     <button
