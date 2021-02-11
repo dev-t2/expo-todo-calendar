@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import Axios from 'axios';
 
 import { ColorType, TodosType } from '../types/todo';
+import { checkTodoAPI } from '../lib/api';
 
 const TodoList: React.FC<TodosType> = ({ todos }) => {
   const [updatedTodos, setUpdatedTodos] = useState(todos);
@@ -20,9 +20,9 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
   const onClickCheck = useCallback(
     (id) => async () => {
       try {
-        const { data } = await Axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/todos/${id}`);
+        const result = await checkTodoAPI(id);
 
-        setUpdatedTodos(data);
+        setUpdatedTodos(result?.data);
       } catch (e) {
         console.error(e);
       }
@@ -63,7 +63,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
                   {todo.checked ? (
                     <>
                       <svg
-                        className="w-6 mr-3 text-red-900"
+                        className="w-6 mr-3 text-red-900 cursor-pointer"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -78,7 +78,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
                       </svg>
 
                       <svg
-                        className="w-6 text-green-900"
+                        className="w-6 text-green-900 cursor-pointer"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"

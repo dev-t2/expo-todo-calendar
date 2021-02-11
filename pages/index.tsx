@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import Axios from 'axios';
 
-import { TodosType, TodoType } from '../types/todo';
+import { TodosType } from '../types/todo';
 import TodoList from '../components/TodoList';
+import { getTodosAPI } from '../lib/api';
 
 const Index: NextPage<TodosType> = ({ todos }) => {
   return <TodoList todos={todos} />;
@@ -11,9 +11,9 @@ const Index: NextPage<TodosType> = ({ todos }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const { data } = await Axios.get<TodoType[]>(`${process.env.NEXT_PUBLIC_API_URL}/todos`);
+    const result = await getTodosAPI();
 
-    return { props: { todos: data } };
+    return { props: { todos: result?.data } };
   } catch (e) {
     return { props: { todos: [] } };
   }

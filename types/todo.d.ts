@@ -5,9 +5,9 @@ export type TodoType = {
   checked: boolean;
 };
 
-export type TodosType {
+export type TodosType = {
   todos: TodoType[];
-}
+};
 
 export type ColorType = {
   [key: string]: number;

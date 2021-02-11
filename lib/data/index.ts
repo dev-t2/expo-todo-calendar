@@ -9,24 +9,33 @@ export const getTodos = async () => {
     return todos;
   } catch (e) {
     console.error(e);
-
-    return [];
   }
 };
 
-export const isTodos = async (id: number) => {
-  const todos = await getTodos();
+export const isExistTodo = async (id: number) => {
+  try {
+    const todos = await getTodos();
 
-  return todos.some((todo) => todo.id === id);
+    return todos?.some((todo) => todo.id === id);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
-export const toggleTodos = async (id: number) => {
-  const todos = await getTodos();
-  const toggledTodos = todos.map((todo) =>
-    todo.id === id ? { ...todo, checked: !todo.checked } : todo
-  );
+export const checkTodo = async (id: number) => {
+  try {
+    let todos = await getTodos();
 
-  await fs.writeFile('./data/todos.json', JSON.stringify(toggledTodos));
+    const updatedTodos = todos?.map((todo) =>
+      todo.id === id ? { ...todo, checked: !todo.checked } : todo
+    );
 
-  return toggledTodos;
+    await fs.writeFile('./data/todos.json', JSON.stringify(updatedTodos));
+
+    todos = await getTodos();
+
+    return todos;
+  } catch (e) {
+    console.error(e);
+  }
 };
