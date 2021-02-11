@@ -1,8 +1,13 @@
 import { memo, useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
+
+import { createTodoAPI } from '../lib/api';
 
 const colors = ['red', 'pink', 'yellow', 'green', 'blue', 'indigo', 'purple'];
 
 const CreateTodo: React.FC = () => {
+  const router = useRouter();
+
   const [selectedColor, setSelectedColor] = useState('');
   const [text, setText] = useState('');
 
@@ -13,6 +18,20 @@ const CreateTodo: React.FC = () => {
     []
   );
 
+  const onSubmit = useCallback(async () => {
+    if (!selectedColor || !text) {
+      return alert('색상과 할 일을 입력해주세요.');
+    }
+
+    try {
+      await createTodoAPI({ text, color: selectedColor });
+
+      return router.push('/');
+    } catch (e) {
+      console.error(e);
+    }
+  }, [selectedColor, text]);
+
   const onChange = useCallback((e) => {
     setText(e.target.value);
   }, []);
@@ -21,7 +40,10 @@ const CreateTodo: React.FC = () => {
     <div className="p-4">
       <div className="flex justify-between items-center">
         <h2 className="font-semibold">Add Todo</h2>
-        <button className="py-1 px-2 border border-solid border-gray-900 rounded-md focus:outline-none text-sm">
+        <button
+          className="py-1 px-2 border border-solid border-gray-900 rounded-md focus:outline-none text-sm"
+          onClick={onSubmit}
+        >
           추가하기
         </button>
       </div>

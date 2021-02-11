@@ -9,6 +9,8 @@ export const getTodos = async () => {
     return todos;
   } catch (e) {
     console.error(e);
+
+    return [];
   }
 };
 
@@ -16,7 +18,17 @@ export const isExistTodo = async (id: number) => {
   try {
     const todos = await getTodos();
 
-    return todos?.some((todo) => todo.id === id);
+    return todos.some((todo) => todo.id === id);
+  } catch (e) {
+    console.error(e);
+
+    return false;
+  }
+};
+
+export const setTodos = async (todos: TodoType[]) => {
+  try {
+    await fs.writeFile('./data/todos.json', JSON.stringify(todos));
   } catch (e) {
     console.error(e);
   }
@@ -30,12 +42,12 @@ export const checkTodo = async (id: number) => {
       todo.id === id ? { ...todo, checked: !todo.checked } : todo
     );
 
-    await fs.writeFile('./data/todos.json', JSON.stringify(updatedTodos));
+    await setTodos(updatedTodos);
 
-    todos = await getTodos();
-
-    return todos;
+    return await getTodos();
   } catch (e) {
     console.error(e);
+
+    return [];
   }
 };

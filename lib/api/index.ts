@@ -8,7 +8,7 @@ const axios = Axios.create({
 
 export const getTodosAPI = async () => {
   try {
-    return await axios.get<TodoType[]>('/todos');
+    return await axios.get<TodoType[]>('/');
   } catch (e) {
     console.error(e);
   }
@@ -16,7 +16,20 @@ export const getTodosAPI = async () => {
 
 export const checkTodoAPI = async (id: number) => {
   try {
-    return await axios.patch(`/todos/${id}`);
+    return await axios.patch(`/${id}`);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+interface ITodo {
+  text: string;
+  color: string;
+}
+
+export const createTodoAPI = async (todo: ITodo) => {
+  try {
+    return await axios.post('/', todo);
   } catch (e) {
     console.error(e);
   }

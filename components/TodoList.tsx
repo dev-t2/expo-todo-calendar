@@ -9,8 +9,6 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
   const todosColor = useMemo(
     () =>
       updatedTodos.reduce((colors: ColorType, todo: TodoType) => {
-        console.log(todo.color);
-
         return {
           ...colors,
           [todo.color]: ++colors[todo.color] || 1,

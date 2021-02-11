@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isExistTodo, checkTodo } from '../../../lib/data';
+import { isExistTodo, checkTodo } from '../../lib/data';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
