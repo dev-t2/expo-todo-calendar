@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 
+.border-top {
+  @apply border-t border-solid border-gray-200;
+}
+
 .border-bottom {
   @apply border-b border-solid border-gray-200;
 }
