@@ -34,3 +34,11 @@ export const createTodoAPI = async (todo: ITodo) => {
     console.error(e);
   }
 };
+
+export const deleteTodoAPI = async (id: number) => {
+  try {
+    return await axios.delete(`/${id}`);
+  } catch (e) {
+    console.error(e);
+  }
+};

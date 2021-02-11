@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 
 import { ColorType, TodoType, TodosType } from '../types/todo';
-import { checkTodoAPI } from '../lib/api';
+import { checkTodoAPI, deleteTodoAPI } from '../lib/api';
 
 const TodoList: React.FC<TodosType> = ({ todos }) => {
   const [updatedTodos, setUpdatedTodos] = useState(todos);
@@ -15,6 +15,19 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
         };
       }, {}),
     [updatedTodos]
+  );
+
+  const onClickDelete = useCallback(
+    (id) => async () => {
+      try {
+        const result = await deleteTodoAPI(id);
+
+        setUpdatedTodos(result?.data);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    []
   );
 
   const onClickCheck = useCallback(
@@ -69,6 +82,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
+                          onClick={onClickDelete(todo.id)}
                         >
                           <path
                             strokeLinecap="round"
