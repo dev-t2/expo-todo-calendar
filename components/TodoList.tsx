@@ -1,9 +1,11 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { ColorType, TodoType, TodosType } from '../types/todo';
 import { checkTodoAPI, deleteTodoAPI } from '../lib/api';
 
 const TodoList: React.FC<TodosType> = ({ todos }) => {
+  const router = useRouter();
   const [updatedTodos, setUpdatedTodos] = useState(todos);
 
   const todosColor = useMemo(
@@ -16,6 +18,12 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
       }, {}),
     [updatedTodos]
   );
+
+  useEffect(() => {
+    if (updatedTodos.length === 0) {
+      router.replace('/todo');
+    }
+  }, [updatedTodos]);
 
   const onClickDelete = useCallback(
     (id) => async () => {
@@ -46,19 +54,13 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
   return (
     <div>
       <div>
-        <div className="border-bottom p-3">
-          <div className="text-base mb-2 font-semibold">
-            TODO<span className="ml-2">{updatedTodos.length}개</span>
-          </div>
-
-          <div className="flex">
-            {Object.entries(todosColor).map(([color, value], index) => (
-              <div key={index} className="flex items-center mr-2">
-                <div className={`w-5 h-5 rounded-full bg-${color}-600`} />
-                <div className="text-base ml-1">{value}개</div>
-              </div>
-            ))}
-          </div>
+        <div className="flex border-bottom p-3">
+          {Object.entries(todosColor).map(([color, value], index) => (
+            <div key={index} className="flex items-center mr-2">
+              <div className={`w-5 h-5 rounded-full bg-${color}-600`} />
+              <div className="text-base ml-1">{value}개</div>
+            </div>
+          ))}
         </div>
 
         <div>

@@ -37,18 +37,8 @@ const CreateTodo: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-5">
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold">Add Todo</h2>
-        <button
-          className="py-1 px-2 border border-solid border-gray-900 rounded-md focus:outline-none text-sm"
-          onClick={onSubmit}
-        >
-          추가하기
-        </button>
-      </div>
-
-      <div className="mt-4 flex justify-between">
         <div className="flex">
           {colors.map((color, index) => (
             <button
@@ -63,12 +53,12 @@ const CreateTodo: React.FC = () => {
 
         <div>
           <svg
-            className="svg"
+            className="svg text-gray-600"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            onClick={() => {}}
+            onClick={onSubmit}
           >
             <path
               strokeLinecap="round"

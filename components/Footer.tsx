@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
   }, [isIndex]);
 
   return (
-    <div className="w-full h-12 fixed bottom-0 border-top flex justify-center items-center">
+    <div className="w-full h-12 border-top flex justify-center items-center">
       {isIndex ? (
         <svg
           className="svg text-gray-600"

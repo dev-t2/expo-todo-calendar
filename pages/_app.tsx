@@ -7,11 +7,15 @@ import Footer from '../components/Footer';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <>
+    <div className="h-screen flex flex-col">
       <Header />
-      <Component {...pageProps} />
+
+      <div className="flex-1">
+        <Component {...pageProps} />
+      </div>
+
       <Footer />
-    </>
+    </div>
   );
 };
 
