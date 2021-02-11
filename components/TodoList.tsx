@@ -1,17 +1,33 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
+import Axios from 'axios';
 
 import { ColorType, TodosType } from '../types/todo';
 
 const TodoList: React.FC<TodosType> = ({ todos }) => {
+  const [updatedTodos, setUpdatedTodos] = useState(todos);
+
   const todosColor = useMemo(
     () =>
-      todos.reduce((colors: ColorType, todo) => {
+      updatedTodos.reduce((colors: ColorType, todo) => {
         return {
           ...colors,
           [todo.color]: ++colors[todo.color] || 1,
         };
       }, {}),
-    [todos]
+    [updatedTodos]
+  );
+
+  const onClickCheck = useCallback(
+    (id) => async () => {
+      try {
+        const { data } = await Axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/todos/${id}`);
+
+        setUpdatedTodos(data);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    []
   );
 
   return (
@@ -19,7 +35,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
       <div className="border-bottom">
         <div className="border-bottom p-3">
           <div className="text-base mb-2 font-semibold">
-            TODO<span className="ml-2">{todos.length}개</span>
+            TODO<span className="ml-2">{updatedTodos.length}개</span>
           </div>
 
           <div className="flex">
@@ -34,7 +50,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
 
         <div>
           <ul>
-            {todos.map((todo) => (
+            {updatedTodos.map((todo) => (
               <li key={todo.id} className="flex justify-between items-center h-12 border-bottom">
                 <div className="h-full flex items-center">
                   <div className={`w-3 h-full bg-${todo.color}-600`} />
@@ -67,6 +83,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        onClick={onClickCheck(todo.id)}
                       >
                         <path
                           strokeLinecap="round"
@@ -79,7 +96,7 @@ const TodoList: React.FC<TodosType> = ({ todos }) => {
                   ) : (
                     <button
                       className="w-5 h-5 rounded-full border border-solid border-gray-200 bg-transparent focus:outline-none"
-                      onClick={() => {}}
+                      onClick={onClickCheck(todo.id)}
                     ></button>
                   )}
                 </div>
