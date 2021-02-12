@@ -1,10 +1,10 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-
+import { combineReducers } from 'redux';
 import todo from './todo';
 
 const rootReducer = combineReducers({
-  todo,
+  todo: todo.reducer,
 });
 
 const reducer = (state: any, action: any) => {
@@ -14,6 +14,8 @@ const reducer = (state: any, action: any) => {
       ...action.payload,
     };
 
+    if (state.count) nextState.count = state.count;
+
     return nextState;
   }
 
@@ -22,18 +24,11 @@ const reducer = (state: any, action: any) => {
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-const bindMiddleware = (middleware: any) => {
-  if (process.env.NODE_ENV !== 'production') {
-    const { composeWithDevTools } = require('redux-devtools-extension');
-
-    return composeWithDevTools(applyMiddleware(...middleware));
-  }
-
-  return applyMiddleware(...middleware);
-};
-
 const initStore = () => {
-  return createStore(reducer, bindMiddleware([]));
+  return configureStore({
+    reducer,
+    devTools: true,
+  });
 };
 
 export const wrapper = createWrapper(initStore);
