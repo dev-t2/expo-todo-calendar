@@ -1,10 +1,10 @@
 import { TodoType } from '../types/todo';
 
-export const INIT_TODO_LIST = 'todo/INIT_TODO_LIST';
+export const SET_TODO_LIST = 'todo/SET_TODO_LIST';
 
 export const setTodo = (payload: TodoType[]) => {
   return {
-    type: INIT_TODO_LIST,
+    type: SET_TODO_LIST,
     payload,
   };
 };
@@ -21,7 +21,7 @@ const initialState: TodoReduxState = {
 
 const reducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case INIT_TODO_LIST:
+    case SET_TODO_LIST:
       const newState = { ...state, todos: action.payload };
 
       return newState;

@@ -4,6 +4,7 @@ import { AppProps } from 'next/app';
 import '../styles/tailwind.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { wrapper } from '../store';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -19,4 +20,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default memo(MyApp);
+export default wrapper.withRedux(memo(MyApp));

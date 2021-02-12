@@ -1,10 +1,12 @@
 import { memo, useEffect } from 'react';
-import { GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { wrapper } from '../store';
 
 import { TodosType } from '../types/todo';
-import TodoList from '../components/TodoList';
 import { getTodosAPI } from '../lib/api';
+import TodoList from '../components/TodoList';
+import { todoActions } from '../store/todo';
 
 const Index: NextPage<TodosType> = ({ todos }) => {
   const router = useRouter();
@@ -18,14 +20,16 @@ const Index: NextPage<TodosType> = ({ todos }) => {
   return <TodoList todos={todos} />;
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) => {
   try {
-    const result = await getTodosAPI();
+    const { data } = await getTodosAPI();
 
-    return { props: { todos: result?.data } };
+    store.dispatch(todoActions.setTodo(data));
+
+    return { props: { todos: data } };
   } catch (e) {
     return { props: { todos: [] } };
   }
-};
+});
 
 export default memo(Index);
