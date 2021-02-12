@@ -1,11 +1,14 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
-import { ColorType, TodoType, TodosType } from '../types/todo';
+import { ColorType, TodoType } from '../types/todo';
 import { checkTodoAPI, deleteTodoAPI } from '../lib/api';
 
-const TodoList: React.FC<TodosType> = ({ todos }) => {
+const TodoList: React.FC = () => {
   const router = useRouter();
+  const todos = useSelector((state) => state.todo.todos);
+
   const [updatedTodos, setUpdatedTodos] = useState(todos);
 
   const todosColor = useMemo(

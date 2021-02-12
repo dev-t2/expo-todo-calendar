@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+import { TypedUseSelectorHook, useSelector as useReduxSelector } from 'react-redux';
 import { combineReducers } from 'redux';
 import todo from './todo';
 
@@ -32,3 +33,9 @@ const initStore = () => {
 };
 
 export const wrapper = createWrapper(initStore);
+
+declare module 'react-redux' {
+  interface DefaultRootState extends RootState {}
+}
+
+export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;

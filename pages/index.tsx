@@ -1,15 +1,17 @@
 import { memo, useEffect } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { wrapper } from '../store';
+import { RootState, wrapper } from '../store';
+import { useSelector } from 'react-redux';
 
 import { TodosType } from '../types/todo';
 import { getTodosAPI } from '../lib/api';
 import TodoList from '../components/TodoList';
 import { todoActions } from '../store/todo';
 
-const Index: NextPage<TodosType> = ({ todos }) => {
+const Index: NextPage<TodosType> = () => {
   const router = useRouter();
+  const todos = useSelector((state: RootState) => state.todo.todos);
 
   useEffect(() => {
     if (todos.length === 0) {
@@ -17,7 +19,7 @@ const Index: NextPage<TodosType> = ({ todos }) => {
     }
   }, []);
 
-  return <TodoList todos={todos} />;
+  return <TodoList />;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) => {
@@ -26,9 +28,11 @@ export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) =
 
     store.dispatch(todoActions.setTodo(data));
 
-    return { props: { todos: data } };
+    return { props: {} };
   } catch (e) {
-    return { props: { todos: [] } };
+    console.error(e);
+
+    return { props: {} };
   }
 });
 
