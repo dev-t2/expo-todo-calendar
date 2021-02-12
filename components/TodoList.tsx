@@ -1,39 +1,39 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ColorType, TodoType } from '../types/todo';
 import { checkTodoAPI, deleteTodoAPI } from '../lib/api';
+import { todoActions } from '../store/todo';
 
 const TodoList: React.FC = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const todos = useSelector((state) => state.todo.todos);
-
-  const [updatedTodos, setUpdatedTodos] = useState(todos);
 
   const todosColor = useMemo(
     () =>
-      updatedTodos.reduce((colors: ColorType, todo: TodoType) => {
+      todos.reduce((colors: ColorType, todo: TodoType) => {
         return {
           ...colors,
           [todo.color]: ++colors[todo.color] || 1,
         };
       }, {}),
-    [updatedTodos]
+    [todos]
   );
 
   useEffect(() => {
-    if (updatedTodos.length === 0) {
+    if (todos.length === 0) {
       router.replace('/todo');
     }
-  }, [updatedTodos]);
+  }, [todos]);
 
   const onClickDelete = useCallback(
     (id) => async () => {
       try {
-        const result = await deleteTodoAPI(id);
+        const { data } = await deleteTodoAPI(id);
 
-        setUpdatedTodos(result?.data);
+        dispatch(todoActions.setTodo(data));
       } catch (e) {
         console.error(e);
       }
@@ -44,9 +44,9 @@ const TodoList: React.FC = () => {
   const onClickCheck = useCallback(
     (id) => async () => {
       try {
-        const result = await checkTodoAPI(id);
+        const { data } = await checkTodoAPI(id);
 
-        setUpdatedTodos(result?.data);
+        dispatch(todoActions.setTodo(data));
       } catch (e) {
         console.error(e);
       }
@@ -68,7 +68,7 @@ const TodoList: React.FC = () => {
 
         <div>
           <ul>
-            {updatedTodos.map((todo) => (
+            {todos.map((todo) => (
               <li key={todo.id} className="flex justify-between items-center h-12 border-bottom">
                 <div className="h-full flex items-center">
                   <div className={`w-3 h-full bg-${todo.color}-600`} />

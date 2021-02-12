@@ -1,12 +1,15 @@
 import { memo, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
-import { createTodoAPI } from '../lib/api';
+import { todoActions } from '../store/todo';
+import { createTodoAPI, getTodosAPI } from '../lib/api';
 
 const colors = ['red', 'pink', 'yellow', 'green', 'blue', 'indigo', 'purple'];
 
 const CreateTodo: React.FC = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [selectedColor, setSelectedColor] = useState('');
   const [text, setText] = useState('');
@@ -25,6 +28,9 @@ const CreateTodo: React.FC = () => {
 
     try {
       await createTodoAPI({ text, color: selectedColor });
+      const { data } = await getTodosAPI();
+
+      dispatch(todoActions.setTodo(data));
 
       return router.push('/');
     } catch (e) {
