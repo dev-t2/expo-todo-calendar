@@ -1,21 +1,17 @@
 import { create } from 'ipfs-core';
 
-const path = 'QmWSeKapxeDKYBYhLmPTAXV2N1N4LNHwvjbqdc3PVfcJ2m';
-
 const main = async () => {
   try {
     const node = await create();
 
-    const stream = node.cat(path);
+    const stream = node.cat('QmVnNM8Gj1bqu4PSKBCzxfLRKHjDMTTesABquBXmZ9SfLn');
     const chunks = [];
 
     for await (const chunk of stream) {
       chunks.push(chunk);
     }
 
-    const data = chunks.toString();
-
-    console.log(data);
+    console.log(chunks.toString());
   } catch (error) {
     console.error(error);
   }
