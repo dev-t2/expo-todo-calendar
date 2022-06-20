@@ -1,6 +1,7 @@
 # References
 
 - Node.js: https://nodejs.org/ko
+- Remix IDE: https://remix.ethereum.org
 - Visual Studio Code: https://code.visualstudio.com
 - ts-node: https://typestrong.org/ts-node
 - ESLint: https://eslint.org
