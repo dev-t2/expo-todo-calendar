@@ -4,9 +4,9 @@ import { join } from 'path';
 
 const main = async () => {
   try {
-    const ipfs = await create();
-    const file = await readFile(join(__dirname, 'file.txt'));
-    const result = await ipfs.add(file);
+    const node = await create();
+    const data = await readFile(join(__dirname, 'data.txt'));
+    const result = await node.add(data);
 
     console.log(result);
   } catch (error) {
