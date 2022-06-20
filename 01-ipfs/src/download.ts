@@ -5,14 +5,17 @@ const PATH = 'QmWSeKapxeDKYBYhLmPTAXV2N1N4LNHwvjbqdc3PVfcJ2m';
 const main = async () => {
   try {
     const node = await create();
+
     const stream = node.cat(PATH);
-    const data = [];
+    const chunks = [];
 
     for await (const chunk of stream) {
-      data.push(chunk);
+      chunks.push(chunk);
     }
 
-    console.log(data.toString());
+    const data = chunks.toString();
+
+    console.log(data);
   } catch (error) {
     console.error(error);
   }
