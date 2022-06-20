@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "scripts": {},
   "license": "MIT",
+  "dependencies": {
+    "ipfs-http-client": "^57.0.1"
+  },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "ts-node": "^10.8.1",
