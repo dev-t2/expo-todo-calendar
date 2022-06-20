@@ -4,7 +4,7 @@
   "scripts": {},
   "license": "MIT",
   "dependencies": {
-    "ipfs-http-client": "^57.0.1"
+    "ipfs-core": "^0.15.2"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
