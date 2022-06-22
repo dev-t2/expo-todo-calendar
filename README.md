@@ -10,3 +10,4 @@
   - js-ipfs: https://js.ipfs.io
   - IPLD Explorer: https://explore.ipld.io
 - Truffle: https://github.com/trufflesuite/truffle
+- Hardhat: https://hardhat.org
