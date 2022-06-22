@@ -5,7 +5,7 @@ const main = async () => {
     const node = await create();
 
     const stream = node.cat('QmWSeKapxeDKYBYhLmPTAXV2N1N4LNHwvjbqdc3PVfcJ2m');
-    const chunks = [];
+    const chunks: Uint8Array[] = [];
 
     for await (const chunk of stream) {
       chunks.push(chunk);

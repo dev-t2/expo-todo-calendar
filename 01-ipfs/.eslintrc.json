@@ -11,8 +11,6 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "args": "none" }],
     "linebreak-style": "off",
     "no-console": "off",
     "no-restricted-syntax": "off"
