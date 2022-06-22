@@ -1,7 +1,7 @@
 # References
 
 - Node.js: https://nodejs.org/ko
-- Ganache: https://github.com/trufflesuite/ganache
+- Ganache: https://trufflesuite.com/ganache
 - Visual Studio Code: https://code.visualstudio.com
 - ts-node: https://typestrong.org/ts-node
 - ESLint: https://eslint.org
