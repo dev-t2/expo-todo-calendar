@@ -1,0 +1,10 @@
+{
+  "name": "02-truffle",
+  "version": "1.0.0",
+  "scripts": {},
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.19"
+  }
+}
