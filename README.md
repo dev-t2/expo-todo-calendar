@@ -11,4 +11,5 @@
 - Truffle Suite: https://trufflesuite.com
   - Ganache: https://trufflesuite.com/ganache
   - Truffle: https://trufflesuite.com/truffle
+- prettier-plugin-solidity: https://github.com/prettier-solidity/prettier-plugin-solidity
 - Hardhat: https://hardhat.org
