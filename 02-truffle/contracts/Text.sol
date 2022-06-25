@@ -16,9 +16,9 @@ contract Text {
         return text;
     }
 
-    function errorOccur(uint256 e) public pure returns (uint256) {
-        require(e == 0, "Error");
+    function errorOccur(uint256 error) public pure returns (uint256) {
+        require(error == 0, "Error");
 
-        return e;
+        return error;
     }
 }
