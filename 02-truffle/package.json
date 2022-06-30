@@ -1,7 +1,10 @@
 {
   "name": "02-truffle",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "compile": "truffle compile",
+    "deploy": "truffle migrate"
+  },
   "license": "MIT",
   "devDependencies": {
     "prettier": "^2.7.1",
