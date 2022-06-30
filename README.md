@@ -12,4 +12,5 @@
   - Ganache: https://trufflesuite.com/ganache
   - Truffle: https://trufflesuite.com/truffle
 - prettier-solidity: https://github.com/prettier-solidity
+- truffle-assertions: https://github.com/rkalis/truffle-assertions
 - Hardhat: https://hardhat.org
