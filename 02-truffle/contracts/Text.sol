@@ -2,18 +2,18 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Text {
-  string public text;
+  string public _text;
 
-  constructor(string memory _text) {
-    text = _text;
+  constructor(string memory text) {
+    _text = text;
   }
 
-  function setText(string memory _text) public {
-    text = _text;
+  function setText(string memory text) public {
+    _text = text;
   }
 
   function getText() public view returns (string memory) {
-    return text;
+    return _text;
   }
 
   function errorOccur(uint256 error) public pure returns (uint256) {
