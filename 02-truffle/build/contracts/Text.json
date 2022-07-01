@@ -5646,9 +5646,7 @@
   "ast": {
     "absolutePath": "project:/contracts/Text.sol",
     "exportedSymbols": {
-      "Text": [
-        82
-      ]
+      "Text": [82]
     },
     "id": 83,
     "license": "MIT",
@@ -5656,15 +5654,7 @@
     "nodes": [
       {
         "id": 34,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.4",
-          ".22",
-          "<",
-          "0.9",
-          ".0"
-        ],
+        "literals": ["solidity", ">=", "0.4", ".22", "<", "0.9", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:32:1"
       },
@@ -5676,9 +5666,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 82,
-        "linearizedBaseContracts": [
-          82
-        ],
+        "linearizedBaseContracts": [82],
         "name": "Text",
         "nameLocation": "78:4:1",
         "nodeType": "ContractDefinition",
@@ -6086,10 +6074,7 @@
                       "id": 71,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "410:7:1",
                       "typeDescriptions": {
