@@ -4,7 +4,8 @@
   "scripts": {
     "compile": "truffle compile",
     "deploy": "truffle migrate",
-    "console": "truffle console"
+    "console": "truffle console",
+    "test": "truffle test"
   },
   "license": "MIT",
   "devDependencies": {
