@@ -1,6 +1,9 @@
 import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { ThemeProvider } from '@emotion/react';
+
+import theme from './src/theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,11 +16,13 @@ const styles = StyleSheet.create({
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
+    <ThemeProvider theme={theme}>
+      <View style={styles.container}>
+        <StatusBar style="auto" />
 
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+        <Text>Open up App.tsx to start working on your app!</Text>
+      </View>
+    </ThemeProvider>
   );
 };
 
