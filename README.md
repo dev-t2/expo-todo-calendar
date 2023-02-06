@@ -8,3 +8,5 @@
   - [no-empty-interface](https://typescript-eslint.io/rules/no-empty-interface)
 - [Emotion](https://emotion.sh/docs/introduction)
   - [@emotion/native](https://emotion.sh/docs/@emotion/native)
+- [Day.js](https://day.js.org)
+  - [TypeScript](https://day.js.org/docs/en/installation/typescript)
