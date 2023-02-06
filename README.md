@@ -1,16 +1,10 @@
 # References
 
-- Node.js: https://nodejs.org/ko
-- Visual Studio Code: https://code.visualstudio.com
-- ts-node: https://typestrong.org/ts-node
-- ESLint: https://eslint.org
-- IPFS: https://ipfs.io
-  - js-ipfs: https://js.ipfs.io
-- IPLD Explorer: https://explore.ipld.io
-- Remix IDE: https://remix.ethereum.org
-- Truffle Suite: https://trufflesuite.com
-  - Ganache: https://trufflesuite.com/ganache
-  - Truffle: https://trufflesuite.com/truffle
-- prettier-solidity: https://github.com/prettier-solidity
-- truffle-assertions: https://github.com/rkalis/truffle-assertions
-- Hardhat: https://hardhat.org
+- [Expo](https://expo.dev)
+  - [Using TypeScript](https://docs.expo.dev/guides/typescript)
+- [ESLint](https://eslint.org)
+  - [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react)
+  - [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks)
+  - [no-empty-interface](https://typescript-eslint.io/rules/no-empty-interface)
+- [Emotion](https://emotion.sh/docs/introduction)
+  - [@emotion/native](https://emotion.sh/docs/@emotion/native)
