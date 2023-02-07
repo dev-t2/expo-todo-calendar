@@ -1,28 +1,23 @@
 import dayjs from 'dayjs';
 
-const fillCalendarData = (start: dayjs.Dayjs, end: dayjs.Dayjs, monthData: dayjs.Dayjs[]) => {
-  const beforeLength = dayjs(start).get('day');
-  const afterLength = 6 - dayjs(end).get('day');
+export const getCalendarColumns = (date: dayjs.Dayjs) => {
+  const startDate = dayjs(date).startOf('month');
+  const endDate = dayjs(date.endOf('month'));
 
-  const beforeData = new Array(beforeLength).fill(null).map((_, index) => {
-    return dayjs(start).subtract(beforeLength - index, 'day');
+  const beforeLength = dayjs(startDate).get('day');
+  const beforeColumns = new Array(beforeLength).fill(null).map((_, index) => {
+    return dayjs(startDate).subtract(beforeLength - index, 'day');
   });
 
-  const afterData = new Array(afterLength).fill(null).map((_, index) => {
-    return dayjs(end).add(index + 1, 'day');
+  const length = dayjs(endDate).get('date');
+  const columns = new Array(length).fill(null).map((_, index) => {
+    return dayjs(startDate).add(index, 'day');
   });
 
-  return [...beforeData, ...monthData, ...afterData];
-};
-
-export const getCalendarData = (now: dayjs.Dayjs) => {
-  const start = dayjs(now).startOf('month');
-  const end = dayjs(now.endOf('month'));
-  const monthLength = dayjs(end).get('date');
-
-  const monthData = new Array(monthLength).fill(null).map((_, index) => {
-    return dayjs(start).add(index, 'day');
+  const afterLength = 6 - dayjs(endDate).get('day');
+  const afterColumns = new Array(afterLength).fill(null).map((_, index) => {
+    return dayjs(endDate).add(index + 1, 'day');
   });
 
-  return fillCalendarData(start, end, monthData);
+  return [...beforeColumns, ...columns, ...afterColumns];
 };
