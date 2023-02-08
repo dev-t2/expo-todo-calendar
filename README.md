@@ -10,3 +10,6 @@
   - [@emotion/native](https://emotion.sh/docs/@emotion/native)
 - [Day.js](https://day.js.org)
   - [TypeScript](https://day.js.org/docs/en/installation/typescript)
+- [react-native-safe-area-context](https://github.com/th3rdwave/react-native-safe-area-context)
+- [Tailwind CSS](https://tailwindcss.com)
+  - [Customizing Colors](https://tailwindcss.com/docs/customizing-colors)

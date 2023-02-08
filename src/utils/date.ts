@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 
-export const getCalendarColumns = (date: dayjs.Dayjs) => {
-  const startDate = dayjs(date).startOf('month');
-  const endDate = dayjs(date.endOf('month'));
+export const getCalendarColumns = (date?: dayjs.Dayjs) => {
+  const now = dayjs();
+
+  const startDate = dayjs(date ?? now).startOf('month');
+  const endDate = dayjs(date ?? now).endOf('month');
 
   const beforeLength = dayjs(startDate).get('day');
   const beforeColumns = new Array(beforeLength).fill(null).map((_, index) => {
