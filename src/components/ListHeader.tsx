@@ -51,11 +51,18 @@ const StyledText = styled.Text<IStyledText>(({ color }) => ({
 interface IListHeader {
   paddingHorizontal?: number;
   currentDate: dayjs.Dayjs;
+  onPressLeft: () => void;
+  onPressDate: () => void;
+  onPressRight: () => void;
 }
 
-const days = ['일', '월', '화', '수', '목', '금', '토'];
-
-const ListHeader: FC<IListHeader> = ({ paddingHorizontal = 0, currentDate }) => {
+const ListHeader: FC<IListHeader> = ({
+  paddingHorizontal = 0,
+  currentDate,
+  onPressLeft,
+  onPressDate,
+  onPressRight,
+}) => {
   const { width } = useWindowDimensions();
 
   const theme = useTheme();
@@ -63,6 +70,7 @@ const ListHeader: FC<IListHeader> = ({ paddingHorizontal = 0, currentDate }) => 
   const date = useMemo(() => currentDate.format('YYYY년 MM월 DD일'), [currentDate]);
 
   const column = useMemo(() => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
     const size = Math.floor((width - paddingHorizontal * 2) / 7);
 
     return days.map((day, index) => {
@@ -84,15 +92,15 @@ const ListHeader: FC<IListHeader> = ({ paddingHorizontal = 0, currentDate }) => 
   return (
     <Container>
       <DateContainer>
-        <StyledPressable>
+        <StyledPressable onPress={onPressLeft}>
           <SimpleLineIcons name="arrow-left" size={16} color={theme.colors.text} />
         </StyledPressable>
 
-        <StyledPressable>
+        <StyledPressable onPress={onPressDate}>
           <Date>{date}</Date>
         </StyledPressable>
 
-        <StyledPressable>
+        <StyledPressable onPress={onPressRight}>
           <SimpleLineIcons name="arrow-right" size={16} color={theme.colors.text} />
         </StyledPressable>
       </DateContainer>
