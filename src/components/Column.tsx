@@ -51,7 +51,7 @@ const Column: FC<IColumn> = ({ paddingHorizontal = 0, item }) => {
       return theme.colors.blue[500];
     }
 
-    return theme.colors.gray[700];
+    return theme.colors.text;
   }, [item, theme.colors]);
 
   const isCurrentMonth = useMemo(() => {

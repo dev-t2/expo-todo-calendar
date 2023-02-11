@@ -8,17 +8,22 @@ import dayjs from 'dayjs';
 
 import theme from './src/theme';
 import { getCalendarColumns } from './src/utils/date';
-import { Column } from './src/components';
+import { Column, ListHeader } from './src/components';
 
 const Container = styled(SafeAreaView)({
   flex: 1,
-  justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: '#fff',
 });
 
 const App = () => {
   const calendarColumns = useMemo(() => getCalendarColumns(), []);
+
+  const ListHeaderComponent = useCallback(() => {
+    const currentDate = dayjs();
+
+    return <ListHeader paddingHorizontal={20} currentDate={currentDate} />;
+  }, []);
 
   const keyExtractor = useCallback((_: dayjs.Dayjs, index: number) => `${index}`, []);
 
@@ -34,6 +39,7 @@ const App = () => {
         <FlatList
           data={calendarColumns}
           numColumns={7}
+          ListHeaderComponent={ListHeaderComponent}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
         />
