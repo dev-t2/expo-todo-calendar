@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -17,19 +17,29 @@ const Container = styled(SafeAreaView)({
 });
 
 const App = () => {
-  const calendarColumns = useMemo(() => getCalendarColumns(), []);
+  const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
+
+  const calendarColumns = useMemo(() => getCalendarColumns(selectedDate), [selectedDate]);
 
   const ListHeaderComponent = useCallback(() => {
-    const currentDate = dayjs();
-
-    return <ListHeader paddingHorizontal={20} currentDate={currentDate} />;
-  }, []);
+    return <ListHeader paddingHorizontal={20} currentDate={selectedDate} />;
+  }, [selectedDate]);
 
   const keyExtractor = useCallback((_: dayjs.Dayjs, index: number) => `${index}`, []);
 
-  const renderItem = useCallback<ListRenderItem<dayjs.Dayjs>>(({ item }) => {
-    return <Column paddingHorizontal={20} item={item} />;
-  }, []);
+  const renderItem = useCallback<ListRenderItem<dayjs.Dayjs>>(
+    ({ item }) => {
+      return (
+        <Column
+          paddingHorizontal={20}
+          selectedDate={selectedDate}
+          item={item}
+          onPress={() => setSelectedDate(item)}
+        />
+      );
+    },
+    [selectedDate]
+  );
 
   return (
     <ThemeProvider theme={theme}>

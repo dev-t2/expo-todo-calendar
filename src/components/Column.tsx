@@ -6,13 +6,16 @@ import dayjs from 'dayjs';
 
 interface IContainer {
   size: number;
+  isSelected: boolean;
 }
 
-const Container = styled.Pressable<IContainer>(({ size }) => ({
+const Container = styled.Pressable<IContainer>(({ theme, size, isSelected }) => ({
   width: size,
   height: size,
   justifyContent: 'center',
   alignItems: 'center',
+  backgroundColor: isSelected ? theme.colors.gray[300] : theme.colors.white,
+  borderRadius: size / 2,
 }));
 
 interface IStyledText {
@@ -28,10 +31,12 @@ const StyledText = styled.Text<IStyledText>(({ color, isCurrentMonth }) => ({
 
 interface IColumn {
   paddingHorizontal?: number;
+  selectedDate: dayjs.Dayjs;
   item: dayjs.Dayjs;
+  onPress: () => void;
 }
 
-const Column: FC<IColumn> = ({ paddingHorizontal = 0, item }) => {
+const Column: FC<IColumn> = ({ paddingHorizontal = 0, selectedDate, item, onPress }) => {
   const { width } = useWindowDimensions();
 
   const theme = useTheme();
@@ -39,6 +44,8 @@ const Column: FC<IColumn> = ({ paddingHorizontal = 0, item }) => {
   const size = useMemo(() => {
     return Math.floor((width - paddingHorizontal * 2) / 7);
   }, [width, paddingHorizontal]);
+
+  const isSelected = useMemo(() => dayjs(selectedDate).isSame(item, 'date'), [selectedDate, item]);
 
   const color = useMemo(() => {
     const day = dayjs(item).get('day');
@@ -55,15 +62,13 @@ const Column: FC<IColumn> = ({ paddingHorizontal = 0, item }) => {
   }, [item, theme.colors]);
 
   const isCurrentMonth = useMemo(() => {
-    const now = dayjs();
-
-    return dayjs(item).isSame(now, 'month');
-  }, [item]);
+    return dayjs(item).isSame(selectedDate, 'month');
+  }, [item, selectedDate]);
 
   const date = useMemo(() => dayjs(item).get('date'), [item]);
 
   return (
-    <Container size={size}>
+    <Container size={size} isSelected={isSelected} onPress={onPress}>
       <StyledText color={color} isCurrentMonth={isCurrentMonth}>
         {date}
       </StyledText>

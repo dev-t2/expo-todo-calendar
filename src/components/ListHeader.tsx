@@ -32,7 +32,7 @@ interface IStyledView {
   size: number;
 }
 
-const StyledView = styled.Pressable<IStyledView>(({ size }) => ({
+const StyledView = styled.View<IStyledView>(({ size }) => ({
   width: size,
   height: size,
   justifyContent: 'center',
