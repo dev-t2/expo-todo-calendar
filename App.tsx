@@ -1,5 +1,13 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { FlatList, ImageSourcePropType, ListRenderItem, StyleSheet, View } from 'react-native';
+import {
+  FlatList,
+  ImageSourcePropType,
+  KeyboardAvoidingView,
+  ListRenderItem,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { ThemeProvider } from '@emotion/react';
@@ -7,7 +15,7 @@ import styled from '@emotion/native';
 import dayjs from 'dayjs';
 
 import theme from './src/theme';
-import { Calendar, Container, Todo } from './src/components';
+import { Calendar, Container, Input, Todo } from './src/components';
 
 const BackgroundImage = styled.Image(StyleSheet.absoluteFill);
 
@@ -26,13 +34,19 @@ const App = () => {
     { id: 1, date: dayjs(), content: '공부하기', isSuccess: true },
     { id: 2, date: dayjs(), content: '운동하기', isSuccess: false },
   ]);
-  // const [content, setContent] = useState('');
+  const [content, setContent] = useState('');
 
   const source = useMemo<ImageSourcePropType>(() => {
     return {
       uri: 'https://img.freepik.com/free-photo/white-crumpled-paper-texture-for-background_1373-159.jpg?w=1060&t=st=1667524235~exp=1667524835~hmac=8a3d988d6c33a32017e280768e1aa4037b1ec8078c98fe21f0ea2ef361aebf2c',
     };
   }, []);
+
+  const behavior = useMemo(() => (Platform.OS === 'ios' ? 'padding' : 'height'), []);
+
+  const placeholder = useMemo(() => {
+    return `${dayjs(selectedDate).format('MM월 D일')}에 해야할 일 추가하기`;
+  }, [selectedDate]);
 
   const onPressLeft = useCallback(() => {
     setSelectedDate(dayjs(selectedDate).subtract(1, 'month'));
@@ -84,6 +98,14 @@ const App = () => {
     return <Todo {...item} />;
   }, []);
 
+  const onChangeContent = useCallback((content: string) => {
+    setContent(content);
+  }, []);
+
+  const onSubmitContent = useCallback(() => {
+    //
+  }, []);
+
   const onConfirm = useCallback((date: Date) => {
     setSelectedDate(dayjs(date));
     setIsDatePicker(false);
@@ -95,12 +117,22 @@ const App = () => {
         <Container>
           <BackgroundImage source={source} />
 
-          <FlatList
-            data={todos}
-            ListHeaderComponent={ListHeaderComponent}
-            keyExtractor={keyExtractor}
-            renderItem={renderItem}
-          />
+          <KeyboardAvoidingView behavior={behavior}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={todos}
+              ListHeaderComponent={ListHeaderComponent}
+              keyExtractor={keyExtractor}
+              renderItem={renderItem}
+            />
+
+            <Input
+              placeholder={placeholder}
+              value={content}
+              onChangeText={onChangeContent}
+              onSubmit={onSubmitContent}
+            />
+          </KeyboardAvoidingView>
 
           <DateTimePickerModal
             isVisible={isDatePicker}

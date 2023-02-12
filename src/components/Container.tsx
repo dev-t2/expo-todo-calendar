@@ -1,17 +1,18 @@
-import { FC, memo, ReactNode } from 'react';
+import { FC, memo, ReactNode, useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from '@emotion/native';
+import { Keyboard } from 'react-native';
 
-interface IStyledView {
+interface IStyledPressable {
   paddingTop: number;
   paddingBottom: number;
 }
 
-const StyledView = styled.View<IStyledView>(({ paddingTop, paddingBottom }) => ({
+const StyledPressable = styled.Pressable<IStyledPressable>(({ paddingTop, paddingBottom }) => ({
   flex: 1,
   alignItems: 'center',
   paddingTop,
-  paddingBottom,
+  paddingBottom: paddingBottom + 20,
   backgroundColor: '#fff',
 }));
 
@@ -22,10 +23,14 @@ interface IContainer {
 const Container: FC<IContainer> = ({ children }) => {
   const { top, bottom } = useSafeAreaInsets();
 
+  const onPress = useCallback(() => {
+    Keyboard.dismiss();
+  }, []);
+
   return (
-    <StyledView paddingTop={top} paddingBottom={bottom}>
+    <StyledPressable paddingTop={top} paddingBottom={bottom} onPress={onPress}>
       {children}
-    </StyledView>
+    </StyledPressable>
   );
 };
 
