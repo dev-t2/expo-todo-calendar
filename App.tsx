@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { FlatList, ImageSourcePropType, ListRenderItem, StyleSheet } from 'react-native';
+import { FlatList, ImageSourcePropType, ListRenderItem, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { ThemeProvider } from '@emotion/react';
@@ -7,11 +7,11 @@ import styled from '@emotion/native';
 import dayjs from 'dayjs';
 
 import theme from './src/theme';
-import { Calendar, Container } from './src/components';
+import { Calendar, Container, Todo } from './src/components';
 
 const BackgroundImage = styled.Image(StyleSheet.absoluteFill);
 
-interface ITodo {
+export interface ITodoData {
   id: number;
   date: dayjs.Dayjs;
   content: string;
@@ -22,7 +22,7 @@ const App = () => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
 
-  const [todos] = useState<ITodo[]>([
+  const [todos] = useState<ITodoData[]>([
     { id: 1, date: dayjs(), content: '공부하기', isSuccess: true },
     { id: 2, date: dayjs(), content: '운동하기', isSuccess: false },
   ]);
@@ -55,20 +55,33 @@ const App = () => {
 
   const ListHeaderComponent = useCallback(() => {
     return (
-      <Calendar
-        selectedDate={selectedDate}
-        onPressLeft={onPressLeft}
-        onPressHeaderDate={onPressHeaderDate}
-        onPressRight={onPressRight}
-        onPressDate={onPressDate}
-      />
+      <>
+        <Calendar
+          selectedDate={selectedDate}
+          onPressLeft={onPressLeft}
+          onPressHeaderDate={onPressHeaderDate}
+          onPressRight={onPressRight}
+          onPressDate={onPressDate}
+        />
+
+        <View
+          style={{
+            width: 4,
+            height: 4,
+            alignSelf: 'center',
+            backgroundColor: theme.colors.gray[300],
+            borderRadius: 2,
+            marginVertical: 10,
+          }}
+        />
+      </>
     );
   }, [selectedDate, onPressLeft, onPressHeaderDate, onPressRight, onPressDate]);
 
-  const keyExtractor = useCallback((_: unknown, index: number) => `${index}`, []);
+  const keyExtractor = useCallback(({ id }: ITodoData) => `${id}`, []);
 
-  const renderItem = useCallback<ListRenderItem<ITodo>>(() => {
-    return <></>;
+  const renderItem = useCallback<ListRenderItem<ITodoData>>(({ item }) => {
+    return <Todo {...item} />;
   }, []);
 
   const onConfirm = useCallback((date: Date) => {
