@@ -7,26 +7,25 @@ import styled from '@emotion/native';
 import dayjs from 'dayjs';
 
 import theme from './src/theme';
-import { getCalendarColumns } from './src/utils/date';
-import { Column, Container, ListHeader } from './src/components';
+import { Calendar, Container } from './src/components';
 
 const BackgroundImage = styled.Image(StyleSheet.absoluteFill);
 
-// interface ITodo {
-//   id: number;
-//   date: dayjs.Dayjs;
-//   content: string;
-//   isSuccess: boolean;
-// }
+interface ITodo {
+  id: number;
+  date: dayjs.Dayjs;
+  content: string;
+  isSuccess: boolean;
+}
 
 const App = () => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
 
-  // const [todos, setTodos] = useState<ITodo[]>([
-  //   { id: 1, date: dayjs(), content: '공부하기', isSuccess: true },
-  //   { id: 2, date: dayjs(), content: '운동하기', isSuccess: false },
-  // ]);
+  const [todos] = useState<ITodo[]>([
+    { id: 1, date: dayjs(), content: '공부하기', isSuccess: true },
+    { id: 2, date: dayjs(), content: '운동하기', isSuccess: false },
+  ]);
   // const [content, setContent] = useState('');
 
   const source = useMemo<ImageSourcePropType>(() => {
@@ -35,35 +34,30 @@ const App = () => {
     };
   }, []);
 
-  const calendarColumns = useMemo(() => getCalendarColumns(selectedDate), [selectedDate]);
-
-  const ListHeaderComponent = useCallback(() => {
-    return (
-      <ListHeader
-        paddingHorizontal={20}
-        currentDate={selectedDate}
-        onPressLeft={() => setSelectedDate(dayjs(selectedDate).subtract(1, 'month'))}
-        onPressDate={() => setIsDatePicker(true)}
-        onPressRight={() => setSelectedDate(dayjs(selectedDate).add(1, 'month'))}
-      />
-    );
+  const onPressLeft = useCallback(() => {
+    setSelectedDate(dayjs(selectedDate).subtract(1, 'month'));
   }, [selectedDate]);
 
-  const keyExtractor = useCallback((_: dayjs.Dayjs, index: number) => `${index}`, []);
+  const onPressDate = useCallback(() => {
+    setIsDatePicker(true);
+  }, []);
 
-  const renderItem = useCallback<ListRenderItem<dayjs.Dayjs>>(
-    ({ item }) => {
-      return (
-        <Column
-          paddingHorizontal={20}
-          selectedDate={selectedDate}
-          item={item}
-          onPress={() => setSelectedDate(item)}
-        />
-      );
+  const onPressRight = useCallback(() => {
+    setSelectedDate(dayjs(selectedDate).add(1, 'month'));
+  }, [selectedDate]);
+
+  const onPressColumn = useCallback(
+    (date: dayjs.Dayjs) => () => {
+      setSelectedDate(date);
     },
-    [selectedDate]
+    []
   );
+
+  const keyExtractor = useCallback((_: unknown, index: number) => `${index}`, []);
+
+  const renderItem = useCallback<ListRenderItem<ITodo>>(() => {
+    return <></>;
+  }, []);
 
   const onConfirm = useCallback((date: Date) => {
     setSelectedDate(dayjs(date));
@@ -76,13 +70,15 @@ const App = () => {
         <Container>
           <BackgroundImage source={source} />
 
-          <FlatList
-            data={calendarColumns}
-            numColumns={7}
-            ListHeaderComponent={ListHeaderComponent}
-            keyExtractor={keyExtractor}
-            renderItem={renderItem}
+          <Calendar
+            selectedDate={selectedDate}
+            onPressLeft={onPressLeft}
+            onPressDate={onPressDate}
+            onPressRight={onPressRight}
+            onPressColumn={onPressColumn}
           />
+
+          <FlatList data={todos} keyExtractor={keyExtractor} renderItem={renderItem} />
 
           <DateTimePickerModal
             isVisible={isDatePicker}
