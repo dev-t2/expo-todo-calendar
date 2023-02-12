@@ -14,7 +14,7 @@ const Container = styled.Pressable<IContainer>(({ theme, size, isSelected }) => 
   height: size,
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: isSelected ? theme.colors.gray[300] : undefined,
+  backgroundColor: isSelected ? `${theme.colors.gray[100]}99` : undefined,
   borderRadius: size / 2,
 }));
 

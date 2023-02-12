@@ -67,7 +67,7 @@ const ListHeader: FC<IListHeader> = ({
 
   const theme = useTheme();
 
-  const date = useMemo(() => currentDate.format('YYYY년 MM월 DD일'), [currentDate]);
+  const date = useMemo(() => currentDate.format(' YYYY년 MM월 DD일 '), [currentDate]);
 
   const column = useMemo(() => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
