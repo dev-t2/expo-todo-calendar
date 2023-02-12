@@ -38,7 +38,7 @@ const App = () => {
     setSelectedDate(dayjs(selectedDate).subtract(1, 'month'));
   }, [selectedDate]);
 
-  const onPressDate = useCallback(() => {
+  const onPressHeaderDate = useCallback(() => {
     setIsDatePicker(true);
   }, []);
 
@@ -46,12 +46,24 @@ const App = () => {
     setSelectedDate(dayjs(selectedDate).add(1, 'month'));
   }, [selectedDate]);
 
-  const onPressColumn = useCallback(
+  const onPressDate = useCallback(
     (date: dayjs.Dayjs) => () => {
       setSelectedDate(date);
     },
     []
   );
+
+  const ListHeaderComponent = useCallback(() => {
+    return (
+      <Calendar
+        selectedDate={selectedDate}
+        onPressLeft={onPressLeft}
+        onPressHeaderDate={onPressHeaderDate}
+        onPressRight={onPressRight}
+        onPressDate={onPressDate}
+      />
+    );
+  }, [selectedDate, onPressLeft, onPressHeaderDate, onPressRight, onPressDate]);
 
   const keyExtractor = useCallback((_: unknown, index: number) => `${index}`, []);
 
@@ -70,15 +82,12 @@ const App = () => {
         <Container>
           <BackgroundImage source={source} />
 
-          <Calendar
-            selectedDate={selectedDate}
-            onPressLeft={onPressLeft}
-            onPressDate={onPressDate}
-            onPressRight={onPressRight}
-            onPressColumn={onPressColumn}
+          <FlatList
+            data={todos}
+            ListHeaderComponent={ListHeaderComponent}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
           />
-
-          <FlatList data={todos} keyExtractor={keyExtractor} renderItem={renderItem} />
 
           <DateTimePickerModal
             isVisible={isDatePicker}

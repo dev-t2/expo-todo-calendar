@@ -52,7 +52,7 @@ interface IListHeader {
   paddingHorizontal?: number;
   currentDate: dayjs.Dayjs;
   onPressLeft: () => void;
-  onPressDate: () => void;
+  onPressHeaderDate: () => void;
   onPressRight: () => void;
 }
 
@@ -60,7 +60,7 @@ const ListHeader: FC<IListHeader> = ({
   paddingHorizontal = 0,
   currentDate,
   onPressLeft,
-  onPressDate,
+  onPressHeaderDate,
   onPressRight,
 }) => {
   const { width } = useWindowDimensions();
@@ -96,7 +96,7 @@ const ListHeader: FC<IListHeader> = ({
           <SimpleLineIcons name="arrow-left" size={16} color={theme.colors.text} />
         </StyledPressable>
 
-        <StyledPressable onPress={onPressDate}>
+        <StyledPressable onPress={onPressHeaderDate}>
           <Date>{date}</Date>
         </StyledPressable>
 

@@ -9,17 +9,17 @@ import Column from './Column';
 interface ICalendar {
   selectedDate: dayjs.Dayjs;
   onPressLeft: () => void;
-  onPressDate: () => void;
+  onPressHeaderDate: () => void;
   onPressRight: () => void;
-  onPressColumn: (date: dayjs.Dayjs) => () => void;
+  onPressDate: (date: dayjs.Dayjs) => () => void;
 }
 
 const Calendar: FC<ICalendar> = ({
   selectedDate,
   onPressLeft,
-  onPressDate,
+  onPressHeaderDate,
   onPressRight,
-  onPressColumn,
+  onPressDate,
 }) => {
   const calendarColumns = useMemo(() => getCalendarColumns(selectedDate), [selectedDate]);
 
@@ -29,11 +29,11 @@ const Calendar: FC<ICalendar> = ({
         paddingHorizontal={20}
         currentDate={selectedDate}
         onPressLeft={onPressLeft}
-        onPressDate={onPressDate}
+        onPressHeaderDate={onPressHeaderDate}
         onPressRight={onPressRight}
       />
     );
-  }, [selectedDate, onPressLeft, onPressDate, onPressRight]);
+  }, [selectedDate, onPressLeft, onPressHeaderDate, onPressRight]);
 
   const keyExtractor = useCallback((_: unknown, index: number) => `${index}`, []);
 
@@ -44,17 +44,18 @@ const Calendar: FC<ICalendar> = ({
           paddingHorizontal={20}
           selectedDate={selectedDate}
           item={item}
-          onPress={onPressColumn(item)}
+          onPress={onPressDate(item)}
         />
       );
     },
-    [selectedDate, onPressColumn]
+    [selectedDate, onPressDate]
   );
 
   return (
     <FlatList
       data={calendarColumns}
       numColumns={7}
+      scrollEnabled={false}
       ListHeaderComponent={ListHeaderComponent}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
