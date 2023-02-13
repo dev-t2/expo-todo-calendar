@@ -1,7 +1,9 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import {
+  Alert,
   FlatList,
   ImageSourcePropType,
+  Keyboard,
   KeyboardAvoidingView,
   ListRenderItem,
   Platform,
@@ -30,11 +32,10 @@ const App = () => {
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
 
-  const [todos] = useState<ITodoData[]>([
-    { id: 1, date: dayjs(), content: '공부하기', isSuccess: true },
-    { id: 2, date: dayjs(), content: '운동하기', isSuccess: false },
-  ]);
+  const [todos, setTodos] = useState<ITodoData[]>([]);
   const [content, setContent] = useState('');
+
+  const flatListRef = useRef<FlatList>(null);
 
   const source = useMemo<ImageSourcePropType>(() => {
     return {
@@ -95,7 +96,41 @@ const App = () => {
   const keyExtractor = useCallback(({ id }: ITodoData) => `${id}`, []);
 
   const renderItem = useCallback<ListRenderItem<ITodoData>>(({ item }) => {
-    return <Todo {...item} />;
+    return (
+      <Todo
+        {...item}
+        onPress={() => {
+          setTodos((prevState) => {
+            return prevState.map((state) => {
+              if (state.id === item.id) {
+                return { ...state, isSuccess: !state.isSuccess };
+              }
+
+              return state;
+            });
+          });
+        }}
+        onLongPress={() => {
+          Alert.alert('정말로 삭제하시겠습니까?', '', [
+            { text: '취소', style: 'cancel' },
+            {
+              text: '확인',
+              onPress: () => {
+                setTodos((prevState) => {
+                  return prevState.filter((state) => state.id !== item.id);
+                });
+              },
+            },
+          ]);
+        }}
+      />
+    );
+  }, []);
+
+  const onFocus = useCallback(() => {
+    setTimeout(() => {
+      flatListRef.current?.scrollToEnd();
+    }, 100);
   }, []);
 
   const onChangeContent = useCallback((content: string) => {
@@ -103,8 +138,17 @@ const App = () => {
   }, []);
 
   const onSubmitContent = useCallback(() => {
-    //
-  }, []);
+    Keyboard.dismiss();
+
+    setTodos((prevState) => {
+      const index = prevState.length - 1;
+      const id = index >= 0 ? prevState[index].id + 1 : 0;
+
+      return [...prevState, { id, date: selectedDate, content, isSuccess: false }];
+    });
+
+    setContent('');
+  }, [content, selectedDate]);
 
   const onConfirm = useCallback((date: Date) => {
     setSelectedDate(dayjs(date));
@@ -119,6 +163,7 @@ const App = () => {
 
           <KeyboardAvoidingView behavior={behavior}>
             <FlatList
+              ref={flatListRef}
               showsVerticalScrollIndicator={false}
               data={todos}
               ListHeaderComponent={ListHeaderComponent}
@@ -129,6 +174,7 @@ const App = () => {
             <Input
               placeholder={placeholder}
               value={content}
+              onFocus={onFocus}
               onChangeText={onChangeContent}
               onSubmit={onSubmitContent}
             />

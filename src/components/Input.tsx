@@ -22,11 +22,12 @@ const StyledTextInput = styled.TextInput(({ theme }) => ({
 
 interface IInput extends TextInputProps {
   value: string;
+  onFocus: () => void;
   onChangeText: (text: string) => void;
   onSubmit: () => void;
 }
 
-const Input: FC<IInput> = ({ value, onChangeText, onSubmit, ...props }) => {
+const Input: FC<IInput> = ({ value, onFocus, onChangeText, onSubmit, ...props }) => {
   const theme = useTheme();
 
   return (
@@ -37,6 +38,7 @@ const Input: FC<IInput> = ({ value, onChangeText, onSubmit, ...props }) => {
         autoCorrect={false}
         textContentType="none"
         value={value}
+        onFocus={onFocus}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmit}
       />

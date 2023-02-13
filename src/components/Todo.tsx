@@ -21,11 +21,12 @@ const Content = styled.Text(({ theme }) => ({
   color: theme.colors.text,
 }));
 
-const StyledPressable = styled.Pressable({});
+interface ITodo extends ITodoData {
+  onPress: () => void;
+  onLongPress: () => void;
+}
 
-interface ITodo extends ITodoData {}
-
-const Todo: FC<ITodo> = ({ content, isSuccess }) => {
+const Todo: FC<ITodo> = ({ content, isSuccess, onPress, onLongPress }) => {
   const theme = useTheme();
 
   const color = useMemo(() => {
@@ -33,12 +34,10 @@ const Todo: FC<ITodo> = ({ content, isSuccess }) => {
   }, [isSuccess, theme.colors]);
 
   return (
-    <Container>
+    <Container onPress={onPress} onLongPress={onLongPress}>
       <Content>{content}</Content>
 
-      <StyledPressable>
-        <Ionicons name="checkmark" size={16} color={color} />
-      </StyledPressable>
+      <Ionicons name="checkmark" size={16} color={color} />
     </Container>
   );
 };
