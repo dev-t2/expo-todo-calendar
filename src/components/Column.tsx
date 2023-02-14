@@ -20,23 +20,25 @@ const Container = styled.Pressable<IContainer>(({ theme, size, isSelected }) => 
 
 interface IStyledText {
   color: string;
+  isTodos: boolean;
   isCurrentMonth: boolean;
 }
 
-const StyledText = styled.Text<IStyledText>(({ color, isCurrentMonth }) => ({
-  fontWeight: '500',
+const StyledText = styled.Text<IStyledText>(({ color, isTodos, isCurrentMonth }) => ({
+  fontWeight: isTodos ? 'bold' : 'normal',
   color,
   opacity: isCurrentMonth ? 1 : 0.5,
 }));
 
 interface IColumn {
   paddingHorizontal?: number;
+  isTodos: boolean;
   selectedDate: dayjs.Dayjs;
   item: dayjs.Dayjs;
   onPress: () => void;
 }
 
-const Column: FC<IColumn> = ({ paddingHorizontal = 0, selectedDate, item, onPress }) => {
+const Column: FC<IColumn> = ({ paddingHorizontal = 0, isTodos, selectedDate, item, onPress }) => {
   const { width } = useWindowDimensions();
 
   const theme = useTheme();
@@ -69,7 +71,7 @@ const Column: FC<IColumn> = ({ paddingHorizontal = 0, selectedDate, item, onPres
 
   return (
     <Container size={size} isSelected={isSelected} onPress={onPress}>
-      <StyledText color={color} isCurrentMonth={isCurrentMonth}>
+      <StyledText color={color} isTodos={isTodos} isCurrentMonth={isCurrentMonth}>
         {date}
       </StyledText>
     </Container>

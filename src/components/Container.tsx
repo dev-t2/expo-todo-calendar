@@ -12,7 +12,7 @@ const StyledPressable = styled.Pressable<IStyledPressable>(({ paddingTop, paddin
   flex: 1,
   alignItems: 'center',
   paddingTop,
-  paddingBottom: paddingBottom + 20,
+  paddingBottom,
   backgroundColor: '#fff',
 }));
 

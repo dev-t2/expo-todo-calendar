@@ -7,7 +7,7 @@ import styled from '@emotion/native';
 const Container = styled.Pressable({
   flexDirection: 'row',
   alignItems: 'center',
-  marginTop: 20,
+  marginVertical: 20,
   paddingHorizontal: 30,
 });
 

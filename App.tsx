@@ -76,6 +76,7 @@ const App = () => {
     return (
       <>
         <Calendar
+          todos={todos}
           selectedDate={selectedDate}
           onPressLeft={onPressLeft}
           onPressHeaderDate={onPressHeaderDate}
@@ -95,7 +96,7 @@ const App = () => {
         />
       </>
     );
-  }, [selectedDate, onPressLeft, onPressHeaderDate, onPressRight, onPressDate]);
+  }, [todos, selectedDate, onPressLeft, onPressHeaderDate, onPressRight, onPressDate]);
 
   const keyExtractor = useCallback(({ id }: ITodoData) => `${id}`, []);
 

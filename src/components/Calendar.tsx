@@ -6,7 +6,10 @@ import { getCalendarColumns } from '../utils/date';
 import ListHeader from './ListHeader';
 import Column from './Column';
 
+import { ITodoData } from '../../App';
+
 interface ICalendar {
+  todos: ITodoData[];
   selectedDate: dayjs.Dayjs;
   onPressLeft: () => void;
   onPressHeaderDate: () => void;
@@ -15,6 +18,7 @@ interface ICalendar {
 }
 
 const Calendar: FC<ICalendar> = ({
+  todos,
   selectedDate,
   onPressLeft,
   onPressHeaderDate,
@@ -39,16 +43,19 @@ const Calendar: FC<ICalendar> = ({
 
   const renderItem = useCallback<ListRenderItem<dayjs.Dayjs>>(
     ({ item }) => {
+      const isTodos = todos.find(({ date }) => dayjs(date).isSame(item, 'date'));
+
       return (
         <Column
           paddingHorizontal={20}
+          isTodos={!!isTodos}
           selectedDate={selectedDate}
           item={item}
           onPress={onPressDate(item)}
         />
       );
     },
-    [selectedDate, onPressDate]
+    [todos, selectedDate, onPressDate]
   );
 
   return (
