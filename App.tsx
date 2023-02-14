@@ -43,6 +43,10 @@ const App = () => {
     };
   }, []);
 
+  const filteredTodos = useMemo(() => {
+    return todos.filter((todo) => dayjs(todo.date).isSame(selectedDate, 'date'));
+  }, [todos, selectedDate]);
+
   const behavior = useMemo(() => (Platform.OS === 'ios' ? 'padding' : 'height'), []);
 
   const placeholder = useMemo(() => {
@@ -148,7 +152,7 @@ const App = () => {
     });
 
     setContent('');
-  }, [content, selectedDate]);
+  }, [selectedDate, content]);
 
   const onConfirm = useCallback((date: Date) => {
     setSelectedDate(dayjs(date));
@@ -165,7 +169,7 @@ const App = () => {
             <FlatList
               ref={flatListRef}
               showsVerticalScrollIndicator={false}
-              data={todos}
+              data={filteredTodos}
               ListHeaderComponent={ListHeaderComponent}
               keyExtractor={keyExtractor}
               renderItem={renderItem}
