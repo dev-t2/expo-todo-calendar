@@ -15,3 +15,4 @@
 - [Tailwind CSS](https://tailwindcss.com)
   - [Customizing Colors](https://tailwindcss.com/docs/customizing-colors)
 - [react-native-modal-datetime-picker](https://github.com/mmazzarolo/react-native-modal-datetime-picker)
+- [Async Storage](https://react-native-async-storage.github.io/async-storage)
