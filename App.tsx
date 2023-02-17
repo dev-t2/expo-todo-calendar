@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from '@emotion/react';
 import styled from '@emotion/native';
 import dayjs from 'dayjs';
@@ -29,6 +30,8 @@ export interface ITodoData {
 }
 
 const App = () => {
+  const { getItem, setItem } = useAsyncStorage('todos');
+
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
 
@@ -52,6 +55,14 @@ const App = () => {
   const placeholder = useMemo(() => {
     return `${dayjs(selectedDate).format('MM월 D일')}에 해야할 일 추가하기`;
   }, [selectedDate]);
+
+  useEffect(() => {
+    (async () => {
+      const todos = await getItem();
+
+      setTodos(JSON.parse(todos ?? '[]'));
+    })();
+  }, [getItem]);
 
   const onPressLeft = useCallback(() => {
     setSelectedDate(dayjs(selectedDate).subtract(1, 'month'));
@@ -100,37 +111,40 @@ const App = () => {
 
   const keyExtractor = useCallback(({ id }: ITodoData) => `${id}`, []);
 
-  const renderItem = useCallback<ListRenderItem<ITodoData>>(({ item }) => {
-    return (
-      <Todo
-        {...item}
-        onPress={() => {
-          setTodos((prevState) => {
-            return prevState.map((state) => {
-              if (state.id === item.id) {
-                return { ...state, isSuccess: !state.isSuccess };
-              }
-
-              return state;
+  const renderItem = useCallback<ListRenderItem<ITodoData>>(
+    ({ item }) => {
+      return (
+        <Todo
+          {...item}
+          onPress={async () => {
+            const updatedTodos = todos.map((state) => {
+              return state.id === item.id ? { ...state, isSuccess: !state.isSuccess } : state;
             });
-          });
-        }}
-        onLongPress={() => {
-          Alert.alert('정말로 삭제하시겠습니까?', '', [
-            { text: '취소', style: 'cancel' },
-            {
-              text: '확인',
-              onPress: () => {
-                setTodos((prevState) => {
-                  return prevState.filter((state) => state.id !== item.id);
-                });
+
+            setTodos(updatedTodos);
+
+            await setItem(JSON.stringify(updatedTodos));
+          }}
+          onLongPress={() => {
+            Alert.alert('정말로 삭제하시겠습니까?', '', [
+              { text: '취소', style: 'cancel' },
+              {
+                text: '확인',
+                onPress: async () => {
+                  const updatedTodos = todos.filter((state) => state.id !== item.id);
+
+                  setTodos(updatedTodos);
+
+                  await setItem(JSON.stringify(updatedTodos));
+                },
               },
-            },
-          ]);
-        }}
-      />
-    );
-  }, []);
+            ]);
+          }}
+        />
+      );
+    },
+    [todos, setItem]
+  );
 
   const onFocus = useCallback(() => {
     setTimeout(() => {
@@ -142,18 +156,19 @@ const App = () => {
     setContent(content);
   }, []);
 
-  const onSubmitContent = useCallback(() => {
+  const onSubmitContent = useCallback(async () => {
     Keyboard.dismiss();
 
-    setTodos((prevState) => {
-      const index = prevState.length - 1;
-      const id = index >= 0 ? prevState[index].id + 1 : 0;
+    const index = todos.length - 1;
+    const id = index >= 0 ? todos[index].id + 1 : 0;
+    const todo = { id, date: selectedDate, content, isSuccess: false };
+    const updatedTodos = [...todos, todo];
 
-      return [...prevState, { id, date: selectedDate, content, isSuccess: false }];
-    });
-
+    setTodos(updatedTodos);
     setContent('');
-  }, [selectedDate, content]);
+
+    await setItem(JSON.stringify(updatedTodos));
+  }, [todos, selectedDate, content, setItem]);
 
   const onConfirm = useCallback((date: Date) => {
     setSelectedDate(dayjs(date));
