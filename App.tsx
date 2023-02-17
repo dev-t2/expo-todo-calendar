@@ -62,7 +62,9 @@ const App = () => {
 
       setTodos(JSON.parse(todos ?? '[]'));
     })();
-  }, [getItem]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onPressLeft = useCallback(() => {
     setSelectedDate(dayjs(selectedDate).subtract(1, 'month'));
@@ -143,7 +145,9 @@ const App = () => {
         />
       );
     },
-    [todos, setItem]
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [todos]
   );
 
   const onFocus = useCallback(() => {
@@ -168,7 +172,9 @@ const App = () => {
     setContent('');
 
     await setItem(JSON.stringify(updatedTodos));
-  }, [todos, selectedDate, content, setItem]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [todos, selectedDate, content]);
 
   const onConfirm = useCallback((date: Date) => {
     setSelectedDate(dayjs(date));
